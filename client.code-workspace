@@ -1,13 +1,14 @@
 {
   "folders": [
-  
     {
       "name": "app",
       "path": "app\\web"
     },
     {
-      "name": "glow-react",
-      "path": "glow\\core\\web"
+      "path": "glow\\core-web"
+    },
+    {
+      "path": "glow\\glow.beta-web"
     }
   ],
   "settings": {}

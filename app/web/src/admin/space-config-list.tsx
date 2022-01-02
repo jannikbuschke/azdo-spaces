@@ -1,15 +1,8 @@
 import * as React from "react"
 import { useTypedQuery } from "../ts-models/api"
 import { useMatch, useNavigate, useResolvedPath } from "react-router"
-import {
-  Button,
-  ButtonGroup,
-  Stack,
-  Box,
-  Flex,
-  Heading,
-} from "@chakra-ui/react"
-import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react"
+import { Button, ButtonGroup, Stack, Flex, Heading } from "@chakra-ui/react"
+import { Table, Tbody, Tr, Td } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 
 export function WorkspaceList() {

@@ -16,7 +16,6 @@ import {
   Box,
   Flex,
 } from "@chakra-ui/react"
-
 import { SelectArea, SelectProject } from "./select-project"
 import { Field, FieldProps } from "formik"
 import {

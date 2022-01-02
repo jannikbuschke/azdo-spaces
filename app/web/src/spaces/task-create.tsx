@@ -15,7 +15,7 @@ import {
   Stack,
 } from "@chakra-ui/react"
 import { defaultCreateTaskViewmodel } from "../ts-models/AzdoTasks"
-import { notifyError } from "glow-react"
+import { notifyError } from "glow-core"
 
 export function TaskCreate() {
   const { spaceId: workspaceId } = useParams()

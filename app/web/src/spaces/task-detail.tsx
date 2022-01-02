@@ -19,7 +19,6 @@ import dayjs from "dayjs"
 import { duration } from "moment"
 import { Field as FormikField } from "formik"
 import { RichTextEditor } from "../rich-text-editor"
-import { RenderObject } from "glow-react"
 
 export function TaskDetail() {
   const { id } = useParams()

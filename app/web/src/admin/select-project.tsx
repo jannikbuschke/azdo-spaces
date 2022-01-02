@@ -5,7 +5,6 @@ import {
   defaultWorkItemClassificationNode,
   WorkItemClassificationNode,
 } from "../ts-models/Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
-import { RenderObject } from "glow-react"
 
 export function SelectProject({
   onChange,
