@@ -12,32 +12,6 @@ export const TreeNodeStructureTypeValues: { [key in TreeNodeStructureType]: Tree
 }
 export const TreeNodeStructureTypeValuesArray: TreeNodeStructureType[] = Object.keys(TreeNodeStructureTypeValues) as TreeNodeStructureType[]
 
-export interface WorkItemClassificationNode {
-  id: number
-  identifier: string
-  name: string | null
-  structureType: TreeNodeStructureType
-  hasChildren: boolean | null
-  children: WorkItemClassificationNode[]
-  attributes: { [key: string]: any }
-  path: string | null
-  links: ReferenceLinks
-  url: string | null
-}
-
-export const defaultWorkItemClassificationNode: WorkItemClassificationNode = {
-  id: 0,
-  identifier: "00000000-0000-0000-0000-000000000000",
-  name: null,
-  structureType: {} as any,
-  hasChildren: null,
-  children: [],
-  attributes: {},
-  path: null,
-  links: {} as any,
-  url: null,
-}
-
 export interface WorkItemCommentVersionRef {
   commentId: number
   version: number
@@ -262,6 +236,32 @@ export const defaultWorkItemComment: WorkItemComment = {
   text: null,
   revisedBy: {} as any,
   revisedDate: "1/1/0001 12:00:00 AM",
+  links: {} as any,
+  url: null,
+}
+
+export interface WorkItemClassificationNode {
+  id: number
+  identifier: string
+  name: string | null
+  structureType: TreeNodeStructureType
+  hasChildren: boolean | null
+  children: WorkItemClassificationNode[]
+  attributes: { [key: string]: any }
+  path: string | null
+  links: ReferenceLinks
+  url: string | null
+}
+
+export const defaultWorkItemClassificationNode: WorkItemClassificationNode = {
+  id: 0,
+  identifier: "00000000-0000-0000-0000-000000000000",
+  name: null,
+  structureType: {} as any,
+  hasChildren: null,
+  children: [],
+  attributes: {},
+  path: null,
   links: {} as any,
   url: null,
 }

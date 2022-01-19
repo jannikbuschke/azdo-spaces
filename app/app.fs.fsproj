@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="AzdoTasks.fs" />
+    <Compile Include="spaces.fs" />
+    <Compile Include="tasks.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

@@ -2,58 +2,6 @@
 import { WorkItemType } from "./Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
 import { defaultWorkItemType } from "./Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
 
-export interface GetAreaPaths {
-  projectId: string | null
-}
-
-export const defaultGetAreaPaths: GetAreaPaths = {
-  projectId: null,
-}
-
-export interface DeleteWorkspace {
-  id: string
-}
-
-export const defaultDeleteWorkspace: DeleteWorkspace = {
-  id: "00000000-0000-0000-0000-000000000000",
-}
-
-export interface GetAreas {
-}
-
-export const defaultGetAreas: GetAreas = {
-}
-
-export interface GetArea {
-  id: string
-}
-
-export const defaultGetArea: GetArea = {
-  id: "00000000-0000-0000-0000-000000000000",
-}
-
-export interface UpsertWorkspace {
-  id: string
-  displayName: string | null
-  projectId: string | null
-  areaPath: string | null
-  apiKeys: (string | null)[]
-}
-
-export const defaultUpsertWorkspace: UpsertWorkspace = {
-  id: "00000000-0000-0000-0000-000000000000",
-  displayName: null,
-  projectId: null,
-  areaPath: null,
-  apiKeys: [],
-}
-
-export interface GetProjects {
-}
-
-export const defaultGetProjects: GetProjects = {
-}
-
 export interface GetTask {
   taskId: number
 }
@@ -126,20 +74,56 @@ export const defaultGetWorkspaceViewmodel: GetWorkspaceViewmodel = {
   apiKey: null,
 }
 
-export interface Workspace {
+export interface GetAreaPaths {
+  projectId: string | null
+}
+
+export const defaultGetAreaPaths: GetAreaPaths = {
+  projectId: null,
+}
+
+export interface DeleteWorkspace {
+  id: string
+}
+
+export const defaultDeleteWorkspace: DeleteWorkspace = {
+  id: "00000000-0000-0000-0000-000000000000",
+}
+
+export interface GetAreas {
+}
+
+export const defaultGetAreas: GetAreas = {
+}
+
+export interface GetArea {
+  id: string
+}
+
+export const defaultGetArea: GetArea = {
+  id: "00000000-0000-0000-0000-000000000000",
+}
+
+export interface UpsertWorkspace {
   id: string
   displayName: string | null
-  projectId: string
+  projectId: string | null
   areaPath: string | null
   apiKeys: (string | null)[]
 }
 
-export const defaultWorkspace: Workspace = {
+export const defaultUpsertWorkspace: UpsertWorkspace = {
   id: "00000000-0000-0000-0000-000000000000",
   displayName: null,
-  projectId: "00000000-0000-0000-0000-000000000000",
+  projectId: null,
   areaPath: null,
   apiKeys: [],
+}
+
+export interface GetProjects {
+}
+
+export const defaultGetProjects: GetProjects = {
 }
 
 export interface CreateTaskViewmodel {
@@ -162,5 +146,21 @@ export const defaultWorkspaceViewmodel: WorkspaceViewmodel = {
   workspaceId: "00000000-0000-0000-0000-000000000000",
   projectName: null,
   areaPath: null,
+}
+
+export interface Workspace {
+  id: string
+  displayName: string | null
+  projectId: string
+  areaPath: string | null
+  apiKeys: (string | null)[]
+}
+
+export const defaultWorkspace: Workspace = {
+  id: "00000000-0000-0000-0000-000000000000",
+  displayName: null,
+  projectId: "00000000-0000-0000-0000-000000000000",
+  areaPath: null,
+  apiKeys: [],
 }
 

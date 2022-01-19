@@ -32,6 +32,16 @@ export function SelectProject({
   )
 }
 
+type NodeViewmodel = { id: number; path: string }
+
+function flatMap(node: WorkItemClassificationNode): NodeViewmodel[] {
+  const result: NodeViewmodel = { id: node.id!, path: node.path! }
+  if (node.children) {
+    return [result, ...node.children.flatMap(flatMap)]
+  }
+  return [result]
+}
+
 export function SelectArea({
   onChange,
   projectId,
@@ -49,11 +59,8 @@ export function SelectArea({
       onChange(null)
     }
   }, [projectId])
-  function map(node: WorkItemClassificationNode) {
-    return { id: node.id, path: node.path }
-  }
-  const root = map(data)
-  const children = data.children ? data.children.flatMap(map) : []
+
+  const nodes = flatMap(data)
   return (
     <div>
       <Select
@@ -63,7 +70,7 @@ export function SelectArea({
           onChange(e.target.value)
         }}
       >
-        {[root, ...children].map((v) => (
+        {nodes.map((v) => (
           <option key={v.path} value={v.path!}>
             {v.path}
           </option>

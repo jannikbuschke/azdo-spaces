@@ -7,42 +7,42 @@ import { Form } from "formik-antd"
 import * as AzdoTasks from "./AzdoTasks"
 import * as Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models from "./Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
 import * as Microsoft_VisualStudio_Services_WebApi from "./Microsoft.VisualStudio.Services.WebApi"
-import * as Microsoft_TeamFoundation_Core_WebApi from "./Microsoft.TeamFoundation.Core.WebApi"
 import * as Microsoft_VisualStudio_Services_Common from "./Microsoft.VisualStudio.Services.Common"
+import * as Microsoft_TeamFoundation_Core_WebApi from "./Microsoft.TeamFoundation.Core.WebApi"
 
 type QueryInputs = {
-  "/api/get-area-paths": AzdoTasks.GetAreaPaths,
-  "/api/get-workspaces": AzdoTasks.GetAreas,
-  "/api/get-workspace": AzdoTasks.GetArea,
-  "/api/get-projects": AzdoTasks.GetProjects,
   "/api/get-task": AzdoTasks.GetTask,
   "/api/get-create-task-viewmodel": AzdoTasks.GetCreateTaskViewmodel,
   "/api/get-comments": AzdoTasks.GetComments,
   "/api/get-tasks": AzdoTasks.GetTasks,
   "/api/get-workspace-viewmodel": AzdoTasks.GetWorkspaceViewmodel,
+  "/api/get-area-paths": AzdoTasks.GetAreaPaths,
+  "/api/get-workspaces": AzdoTasks.GetAreas,
+  "/api/get-workspace": AzdoTasks.GetArea,
+  "/api/get-projects": AzdoTasks.GetProjects,
 }
 type QueryOutputs = {
-  "/api/get-area-paths": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemClassificationNode,
-  "/api/get-workspaces": AzdoTasks.Workspace[],
-  "/api/get-workspace": AzdoTasks.Workspace,
-  "/api/get-projects": Microsoft_TeamFoundation_Core_WebApi.TeamProjectReference[],
   "/api/get-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
   "/api/get-create-task-viewmodel": AzdoTasks.CreateTaskViewmodel,
   "/api/get-comments": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemComments,
   "/api/get-tasks": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem[],
   "/api/get-workspace-viewmodel": AzdoTasks.WorkspaceViewmodel,
+  "/api/get-area-paths": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemClassificationNode,
+  "/api/get-workspaces": AzdoTasks.Workspace[],
+  "/api/get-workspace": AzdoTasks.Workspace,
+  "/api/get-projects": Microsoft_TeamFoundation_Core_WebApi.TeamProjectReference[],
 }
 export type Outputs = {
-  "/api/delete-workspace": AzdoTasks.Workspace,
-  "/api/upsert-workspace": AzdoTasks.Workspace,
   "/api/create-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
   "/api/update-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
+  "/api/delete-workspace": AzdoTasks.Workspace,
+  "/api/upsert-workspace": AzdoTasks.Workspace,
 }
 export type Actions = {
-  "/api/delete-workspace": AzdoTasks.DeleteWorkspace,
-  "/api/upsert-workspace": AzdoTasks.UpsertWorkspace,
   "/api/create-task": AzdoTasks.CreateTask,
   "/api/update-task": AzdoTasks.UpdateTask,
+  "/api/delete-workspace": AzdoTasks.DeleteWorkspace,
+  "/api/upsert-workspace": AzdoTasks.UpsertWorkspace,
 }
 
 type TagWithKey<TagName extends string, T> = {
