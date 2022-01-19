@@ -1,0 +1,101 @@
+parameters:
+  - name: application
+    type: string
+  - name: customer
+    type: string
+  - name: environment
+    type: string
+  - name: instance
+    type: string
+    default: ""
+  - name: deployApplication
+    type: boolean
+    default: true
+  - name: dependsOn
+    type: object
+    default: []
+  - name: condition
+    type: string
+    default: succeeded()
+
+stages:
+  - stage: ${{parameters.customer }}_${{ parameters.environment }}${{ parameters.instance }}
+    displayName: Deploy ${{ parameters.customer }} ${{ parameters.environment }}${{ parameters.instance }}
+    dependsOn: ${{ parameters.dependsOn }}
+    condition: ${{ parameters.condition }}
+    jobs:
+      - deployment: deploy_${{ parameters.application }}_${{ parameters.customer }}_${{ parameters.environment }}${{ parameters.instance }}
+        displayName: Deploy ${{ parameters.application }} to ${{ parameters.customer }}-${{ parameters.environment }}${{ parameters.instance }}
+        variables:
+          - group: deploy-${{ parameters.application }}-${{ parameters.customer }}-${{ parameters.environment }}${{ parameters.instance }}
+        environment: ${{ parameters.application }}-${{ parameters.customer }}-${{ parameters.environment}}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - download: current
+
+                - task: AzurePowerShell@5
+                  name: bicep_deployment
+                  displayName: Bicep deployment
+                  continueOnError: true
+                  inputs:
+                    azureSubscription: gertruddemo.onmicrosoft
+                    azurePowerShellVersion: LatestVersion
+                    pwsh: true
+                    scriptType: inlineScript
+                    inline: |
+                      $timeStamp = Get-Date -Format "yyMMdd_hhmm"
+
+                      #Set override RG name via variable group if customer requires to do so; variable needs to be named 'OVERRIDE_ResourceGroupName'
+                      $resourceGroupName = $env:OVERRIDE_ResourceGroupName
+                      if(!$resourceGroupName ){
+                        $resourceGroupName = "rg-${{ parameters.customer }}-${{ parameters.environment }}"
+                      }
+
+                      if(!(Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue) ){
+                        Write-Output "Resource Group '$($resourceGroupName)' does not exist, creating..."
+                        New-AzResourceGroup -Name $resourceGroupName -Location "$(location)" | out-null
+                      }
+                      else {
+                        write-output "Resource Group '$($resourceGroupName)' exists."
+                      }
+
+                      #Create template parameter object with mandatory parameters
+                      $templateParameters = @{
+                        customer = '${{ parameters.customer }}'
+                        env = '${{ parameters.environment }}'
+                        application = '${{ parameters.application }}'
+                        instance = '${{ parameters.instance }}'
+                        tenantId = '$(tenant_id)'
+                        sqlAdministratorLogin = '$(sql_user)'
+                        sqlAdministratorLoginPassword = '$(sql_login)'
+                      }
+
+                      #Add template parameters from "BICEP_OVERRIDE_" prefixed environment variables (see Azure DevOps variable groups)
+                      Get-ChildItem env:* | where{ $_.name -like "BICEP_OVERRIDE_*" } | foreach{ $templateParameters.add($_.name.trimstart("BICEP_OVERRIDE_"),$_.Value) }
+
+                      write-output "Starting bicep deployment..."
+                      $result = New-AzResourceGroupDeployment `
+                        -Name "bicep_deployment_$timeStamp" `
+                        -ResourceGroupName $resourceGroupName `
+                        -TemplateFile "./azure-pipelines/templates/arm-template.bicep" `
+                        -TemplateParameterObject $templateParameters
+
+                      # write output for use in app_service_deployment
+                      write-output "##vso[task.setvariable variable=app_service_name;isOutput=true]$($result.Outputs.appServiceName.Value)"
+                      write-output "##vso[task.setvariable variable=key_vault_name;isOutput=true]$($result.Outputs.keyVaultName.Value)"
+
+                - task: AzureRmWebAppDeployment@4
+                  name: app_service_deplyoment
+                  displayName: App Service Deployment
+                  # condition: eq(${{ parameters.deployApplication }}, true)
+                  inputs:
+                    azureSubscription: gertruddemo.onmicrosoft
+                    appType: webApp
+                    Package: $(Pipeline.Workspace)/app/app.zip
+                    WebAppName: $(bicep_deployment.app_service_name)
+                    enableCustomDeployment: true
+                    ExcludeFilesFromAppDataFlag: false

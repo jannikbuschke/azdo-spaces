@@ -1,0 +1,65 @@
+parameters:
+  - name: deployApplication
+    type: boolean
+    default: true
+
+trigger:
+  branches:
+    include:
+      - chore/add-release-pipeline
+
+pool:
+  vmImage: "windows-latest"
+
+variables:
+  application: azdospaces
+
+stages:
+  - ${{ if eq(parameters.deployApplication, true) }}:
+      - template: templates/build_application.yml
+        parameters:
+          application: ${{ variables.application }}
+
+  - template: templates/deploy_application.yml
+    parameters:
+      application: ${{ variables.application }}
+      environment: dev
+      customer: intl
+      deployApplication: ${{ parameters.deployApplication}}
+      ${{ if eq(parameters.deployApplication, true) }}:
+        dependsOn: build_${{ variables.application }}
+
+  # - template: templates/deploy_application.yml
+  #   parameters:
+  #     application: ${{ variables.application }}
+  #     environment: demo
+  #     instance: "1"
+  #     customer: intl
+  #     deployApplication: ${{ parameters.deployApplication}}
+  #     ${{ if eq(parameters.deployApplication, true) }}:
+  #       dependsOn: ["build_${{ variables.application }}", "intl_dev"]
+  #     ${{ else }}:
+  #       dependsOn: "intl_dev"
+
+  # - template: templates/deploy_application.yml
+  #   parameters:
+  #     application: ${{ variables.application }}
+  #     environment: demo
+  #     instance: "2"
+  #     customer: intl
+  #     deployApplication: ${{ parameters.deployApplication}}
+  #     ${{ if eq(parameters.deployApplication, true) }}:
+  #       dependsOn: ["build_${{ variables.application }}", "intl_demo1"]
+  #     ${{ else }}:
+  #       dependsOn: "intl_demo1"
+
+  # - template: templates/deploy_application.yml
+  #   parameters:
+  #     application: ${{ variables.application }}
+  #     environment: prod
+  #     customer: wago
+  #     deployApplication: ${{ parameters.deployApplication}}
+  #     ${{ if eq(parameters.deployApplication, true) }}:
+  #       dependsOn: ["build_${{ variables.application }}", "intl_demo1"]
+  #     ${{ else }}:
+  #       dependsOn: "intl_demo1"
