@@ -55,6 +55,8 @@ module Program =
         let logger: Serilog.ILogger = upcast getPreStartLogger ()
         Log.Logger = logger
         let builder = WebApplication.CreateBuilder(args)
+        builder.Logging.ClearProviders()
+        builder.Logging.AddSerilog()
 
         let services = builder.Services
 
@@ -111,6 +113,12 @@ module Program =
 
         let configuration =
             app.Services.GetService<IConfiguration>()
+
+        Log.Logger <- LoggerConfiguration()
+                        .ReadFrom.Configuration(configuration)
+                        .WriteTo.File("logs/log.txt")
+                        .CreateLogger()
+        Log.Logger.Information "logger reconfigured"
 
         app.UseResponseCaching()
 
