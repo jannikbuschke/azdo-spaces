@@ -55,6 +55,9 @@ module Program =
         let logger: Serilog.ILogger = upcast getPreStartLogger ()
         Log.Logger = logger
         let builder = WebApplication.CreateBuilder(args)
+
+        // TODO add KeyVault
+
         builder.Logging.ClearProviders()
         builder.Logging.AddSerilog()
 
@@ -96,6 +99,8 @@ module Program =
         let connectionString =
             builder.Configuration.Item("ConnectionString")
 
+        logger.Information $"Connectionstring {connectionString}"
+
         let options = StoreOptions()
         options.Connection connectionString
         //    options.AutoCreateSchemaObjects <- true // if is development
@@ -116,7 +121,7 @@ module Program =
 
         Log.Logger <- LoggerConfiguration()
                         .ReadFrom.Configuration(configuration)
-                        .WriteTo.File("logs/log.txt")
+                        .WriteTo.File("logs/log-{date}.txt")
                         .CreateLogger()
         Log.Logger.Information "logger reconfigured"
 
