@@ -64,6 +64,9 @@ param sqlServer_name string = 'sql-${customer}-${application}-${env}${instance}'
 @description('Override name of the PostgreSQL server.')
 param postgresqlServer_name string = 'psql-${customer}-${application}-${env}${instance}'
 
+@description('Override name of the PostgreSQL database.')
+param postgresqlServer_database_name string = 'psql-db-${customer}-${application}-${env}${instance}'
+
 @description('Override name of the SQL database.')
 param sqlDatabase_name string = 'sqldb-${customer}-${application}-${env}${instance}'
 
@@ -85,6 +88,11 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/servers@2017-12-01'={
     administratorLogin: sqlAdministratorLogin
     administratorLoginPassword: sqlAdministratorLoginPassword
   }
+}
+
+resource postgresqlDatabase 'Microsoft.DBforPostgreSQL/servers/databases@2017-12-01' = {
+  name: postgresqlServer_database_name
+  parent: postgresServer
 }
 
 resource sqlserver 'Microsoft.Sql/servers@2014-04-01' = {
@@ -214,7 +222,7 @@ resource keyvault_ConnectionString 'Microsoft.KeyVault/vaults/secrets@2021-06-01
   name: 'SqlServerConnectionString'
   properties: {
     contentType: 'text/plain'
-    value: 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabase_name};User Id=${sqlAdministratorLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdministratorLoginPassword};'
+    value: 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabase_name};User Id=${sqlAdministratorLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdministratorLoginPassword};SslMode=Require;'
   }
 }
 
@@ -223,7 +231,7 @@ resource keyvault_PostgresConnectionString 'Microsoft.KeyVault/vaults/secrets@20
   name: 'ConnectionString'
   properties: {
     contentType: 'text/plain'
-    value: 'Host=${postgresServer.properties.fullyQualifiedDomainName};Port=5432;Pooling=true;Connection Lifetime=0;Database=${sqlDatabase_name};User ID=${sqlAdministratorLogin}@${postgresServer.properties.fullyQualifiedDomainName};Password=${sqlAdministratorLoginPassword};'
+    value: 'Host=${postgresServer.properties.fullyQualifiedDomainName};Port=5432;Pooling=true;Connection Lifetime=0;Database=${postgresqlServer_database_name};User ID=${sqlAdministratorLogin}@${postgresServer.properties.fullyQualifiedDomainName};Password=${sqlAdministratorLoginPassword};'
   }
 }
 
