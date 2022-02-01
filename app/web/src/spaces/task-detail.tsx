@@ -19,11 +19,12 @@ import dayjs from "dayjs"
 import { duration } from "moment"
 import { Field as FormikField } from "formik"
 import { RichTextEditor } from "../rich-text-editor"
+import { useToast } from "@chakra-ui/react"
 
 export function TaskDetail() {
   const { id } = useParams()
   const taskId = Number.parseInt(id!)
-  const { data, refetch } = useTypedQuery("/api/get-task", {
+  const { data, refetch, isFetching } = useTypedQuery("/api/get-task", {
     input: { taskId },
     placeholder: defaultWorkItem,
   })
@@ -31,7 +32,7 @@ export function TaskDetail() {
     input: { taskId },
     placeholder: defaultWorkItemComments,
   })
-
+  const toast = useToast()
   const [key, setKey] = React.useState(1)
   React.useEffect(() => {
     setTimeout(() => {
@@ -43,6 +44,10 @@ export function TaskDetail() {
       <Stack>
         <TypedForm
           actionName="/api/update-task"
+          onSuccess={() => {
+            toast({ title: "Success", status: "success" })
+          }}
+          enableReinitialize={true}
           initialValues={{
             taskId,
             title: data.fields["System.Title"] || "-",
@@ -51,7 +56,11 @@ export function TaskDetail() {
         >
           {(f) => (
             <>
-              <Stack direction="column">
+              <Stack
+                direction="column"
+
+                // _loading={true || isFetching}
+              >
                 {/* <Heading size="md">{f.values.title}</Heading> */}
                 <FormikField name="title">
                   {({ field, form }: any) => (
@@ -78,8 +87,10 @@ export function TaskDetail() {
                   // variant="outline"
                   // flexDirection="row-reverse"
                 >
-                  <Button>Delete</Button>
-                  <Button onClick={() => refetch()}>Reload</Button>
+                  {/* <Button>Delete</Button> */}
+                  <Button isLoading={isFetching} onClick={() => refetch()}>
+                    Reload
+                  </Button>
                   <Button
                     onClick={() => f.submitForm()}
                     isLoading={f.isSubmitting}
@@ -95,7 +106,9 @@ export function TaskDetail() {
                       }
                     >
                       <FormLabel htmlFor="description">Description</FormLabel>
-                      <RichTextEditor key={key} name="description" />
+                      <Box background="gray.200" rounded={4}>
+                        <RichTextEditor key={key} name="description" />
+                      </Box>
                       <FormErrorMessage>
                         {form.errors.description}
                       </FormErrorMessage>
@@ -116,10 +129,8 @@ export function TaskDetail() {
           ).humanize(true)}
           )
         </Field>
-        <Field label="Created by (x)">
-          {data.fields["Custom.x_CreatedBy"]}
-        </Field>
-        <Field label="Created by (azdo)">
+        <Field label="Created by">{data.fields["Custom.x_CreatedBy"]}</Field>
+        <Field label="Created by">
           {data.fields["System.CreatedBy"]?.displayName}
         </Field>
         <Field label="Updated">

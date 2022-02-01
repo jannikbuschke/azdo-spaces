@@ -40,14 +40,20 @@ export function RichTextEditor({
 const StyledEditorContent = styled(EditorContent)`
   // border: 1px solid rgb(217, 217, 217);
   // border-radius: 4px;
-  padding: 2px;
+  padding: 8px;
   > .ProseMirror {
     padding: 2px 0px;
     // padding: 4px;
     // border: 1px solid rgb(217, 217, 217);
   }
   > .ProseMirror-focused {
-    padding-left: 8px;
+    padding-left: 10px;
+  }
+  > li {
+    margin-left: 20px;
+  }
+  li {
+    margin-left: 20px;
   }
   blockquote {
     background: #f9f9f9;

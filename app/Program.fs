@@ -92,11 +92,11 @@ module Program =
         services.AddTestAuthentication()
         services.AddResponseCaching()
 
-        let options = StoreOptions()
 
         let connectionString =
             builder.Configuration.Item("ConnectionString")
 
+        let options = StoreOptions()
         options.Connection connectionString
         //    options.AutoCreateSchemaObjects <- true // if is development
         services

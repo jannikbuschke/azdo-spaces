@@ -9,11 +9,13 @@ import { TaskCreate } from "../spaces/task-create"
 import { TaskDetail } from "../spaces/task-detail"
 import { Routes, Route, Outlet } from "react-router"
 import Header from "./header"
+import Gslr from "./header-2"
 
 function App() {
   return (
     <Flex direction="column" background="gray.300" height="100vh">
-      <Header />
+      <Gslr />
+      {/* <Header /> */}
       <Routes>
         <Route path="space" element={<Outlet />}>
           <Route path=":spaceId/join" element={<JoinSpace />} />

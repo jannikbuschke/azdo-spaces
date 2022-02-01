@@ -141,9 +141,10 @@ module AzdoTasks =
             types
               .Where(fun v ->
                 v.Name = "Bug"
-                || v.Name = "Task"
+//                || v.Name = "Task"
                 || v.Name = "User Story"
-                || v.Name = "Meeting")
+                || v.Name = "Meeting"
+              )
               .ToList()
 
           return CreateTaskViewmodel(WorkItemTypes = result)
