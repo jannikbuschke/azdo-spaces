@@ -1,7 +1,14 @@
 import * as React from "react"
 import { useTypedQuery } from "../ts-models/api"
 import { useNavigate, useResolvedPath, useMatch } from "react-router"
-import { Box, Button, ButtonGroup, Heading, Stack } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Heading,
+  Spinner,
+  Stack,
+} from "@chakra-ui/react"
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react"
 import { Tag, Alert, AlertIcon } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
@@ -36,23 +43,31 @@ export function TaskList({
   workspaceId: string
   apiKey: string
 }) {
-  const { data: workspace } = useTypedQuery("/api/get-workspace-viewmodel", {
-    input: { workspaceId, apiKey },
-    placeholder: defaultWorkspaceViewmodel,
-    queryOptions: { enabled: Boolean(apiKey) },
-  })
-  // const [projectId, setProjectId] = React.useState<null | string>(null)
-  const { data, refetch, error } = useTypedQuery("/api/get-tasks", {
-    input: { workspaceId, apiKey },
-    placeholder: [],
-  })
+  const { data: workspace, isFetching: isFetchingWorkspace } = useTypedQuery(
+    "/api/get-workspace-viewmodel",
+    {
+      input: { workspaceId, apiKey },
+      placeholder: defaultWorkspaceViewmodel,
+      queryOptions: { enabled: Boolean(apiKey) },
+    },
+  )
+  const { data, refetch, error, isFetching: isFetchingTasks } = useTypedQuery(
+    "/api/get-tasks",
+    {
+      input: { workspaceId, apiKey },
+      placeholder: [],
+    },
+  )
   const navigate = useNavigate()
+  const areaNameSplit = workspace.areaPath?.split("\\")
+  const areaName = areaNameSplit?.[areaNameSplit.length - 1]
   return (
     <Stack marginTop={4}>
       <ErrorBanner message={error} />
       <Box paddingLeft={2}>
-        <Heading size="md">{workspace.projectName}</Heading>
-        <Heading size="small">{workspace.areaPath}</Heading>
+        {/* <Heading size="md">{workspace.projectName}</Heading> */}
+        <Heading size="md">{areaName || " "}</Heading>
+        {(isFetchingWorkspace || isFetchingTasks) && <Spinner />}
       </Box>
       <Stack direction="row">
         <ButtonGroup size="sm" isAttached={true}>
