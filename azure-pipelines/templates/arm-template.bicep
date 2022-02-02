@@ -231,7 +231,7 @@ resource keyvault_PostgresConnectionString 'Microsoft.KeyVault/vaults/secrets@20
   name: 'ConnectionString'
   properties: {
     contentType: 'text/plain'
-    value: 'Host=${postgresServer.properties.fullyQualifiedDomainName};Port=5432;Pooling=true;Connection Lifetime=0;Database=${postgresqlServer_database_name};User ID=${sqlAdministratorLogin}@${postgresServer.properties.fullyQualifiedDomainName};Password=${sqlAdministratorLoginPassword};'
+    value: 'Host=${postgresServer.properties.fullyQualifiedDomainName};Port=5432;Pooling=true;Connection Lifetime=0;Database=${postgresqlServer_database_name};User ID=${sqlAdministratorLogin}@${postgresServer.properties.fullyQualifiedDomainName};Password=${sqlAdministratorLoginPassword};SslMode=Require;'
   }
 }
 
