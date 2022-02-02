@@ -10,6 +10,7 @@ import {
   FormLabel,
   Input,
   Stack,
+  Tooltip,
 } from "@chakra-ui/react"
 import {
   defaultWorkItem,
@@ -129,10 +130,13 @@ export function TaskDetail() {
           ).humanize(true)}
           )
         </Field>
-        <Field label="Created by">{data.fields["Custom.x_CreatedBy"]}</Field>
-        <Field label="Created by">
-          {data.fields["System.CreatedBy"]?.displayName}
-        </Field>
+        {/* <Field label="Created by">{data.fields["Custom.x_CreatedBy"]}</Field> */}
+        <Tooltip label={data.fields["System.CreatedBy"]?.displayName}>
+          <Field label="Created by">
+            {data.fields["Custom.x_CreatedBy"] ||
+              data.fields["System.CreatedBy"]?.displayName}
+          </Field>
+        </Tooltip>
         <Field label="Updated">
           {dayjs(data.fields["System.ChangedDate"]).format("llll")} (
           {duration(
