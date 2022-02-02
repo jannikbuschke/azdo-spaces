@@ -6,7 +6,7 @@ parameters:
 trigger:
   branches:
     include:
-      - chore/add-release-pipeline
+      - main
 
 pool:
   vmImage: "windows-latest"
