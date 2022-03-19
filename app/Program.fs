@@ -121,7 +121,8 @@ module Program =
 
         Log.Logger <- LoggerConfiguration()
                         .ReadFrom.Configuration(configuration)
-                        .WriteTo.File("logs/log-{date}.txt")
+                        .WriteTo.Console()
+                        // .WriteTo.File("logs/log-{date}.txt")
                         .CreateLogger()
         Log.Logger.Information "logger reconfigured"
 
