@@ -15,6 +15,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "app.fs", "app\app.fs.fsproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "glow.meta", "glow\glow.meta\glow.meta.csproj", "{DF5A8431-BC1A-4E98-9E1F-F96E646FF026}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "glow.ts", "glow\glow.ts\glow.ts.csproj", "{FF0CE0F0-6736-4A05-B940-DDB43F6D84C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{DF5A8431-BC1A-4E98-9E1F-F96E646FF026}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF5A8431-BC1A-4E98-9E1F-F96E646FF026}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF5A8431-BC1A-4E98-9E1F-F96E646FF026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF0CE0F0-6736-4A05-B940-DDB43F6D84C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF0CE0F0-6736-4A05-B940-DDB43F6D84C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF0CE0F0-6736-4A05-B940-DDB43F6D84C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF0CE0F0-6736-4A05-B940-DDB43F6D84C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

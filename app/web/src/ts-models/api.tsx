@@ -1,3 +1,4 @@
+// Assembly: app.fs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 import * as React from "react"
 import { QueryOptions, UseQueryOptions } from "react-query"
 import { useApi, ApiResult, notifySuccess, notifyError } from "glow-core"
@@ -8,6 +9,7 @@ import * as AzdoTasks from "./AzdoTasks"
 import * as Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models from "./Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
 import * as Microsoft_VisualStudio_Services_WebApi from "./Microsoft.VisualStudio.Services.WebApi"
 import * as Microsoft_VisualStudio_Services_Common from "./Microsoft.VisualStudio.Services.Common"
+import * as Microsoft_FSharp_Core from "./Microsoft.FSharp.Core"
 import * as Microsoft_TeamFoundation_Core_WebApi from "./Microsoft.TeamFoundation.Core.WebApi"
 
 type QueryInputs = {

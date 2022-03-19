@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { WorkItemType } from "./Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
 import { defaultWorkItemType } from "./Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
+import { FSharpOption_string } from "./Microsoft.FSharp.Core"
+import { defaultFSharpOption_string } from "./Microsoft.FSharp.Core"
 
 export interface GetTask {
   taskId: number
@@ -76,10 +78,14 @@ export const defaultGetWorkspaceViewmodel: GetWorkspaceViewmodel = {
 
 export interface GetAreaPaths {
   projectId: string | null
+  pat: string | null
+  organizationUrl: string | null
 }
 
 export const defaultGetAreaPaths: GetAreaPaths = {
   projectId: null,
+  pat: null,
+  organizationUrl: null,
 }
 
 export interface DeleteWorkspace {
@@ -106,6 +112,8 @@ export const defaultGetArea: GetArea = {
 
 export interface UpsertWorkspace {
   id: string
+  pat: string | null
+  organizationUrl: string | null
   displayName: string | null
   projectId: string | null
   areaPath: string | null
@@ -114,6 +122,8 @@ export interface UpsertWorkspace {
 
 export const defaultUpsertWorkspace: UpsertWorkspace = {
   id: "00000000-0000-0000-0000-000000000000",
+  pat: null,
+  organizationUrl: null,
   displayName: null,
   projectId: null,
   areaPath: null,
@@ -121,9 +131,13 @@ export const defaultUpsertWorkspace: UpsertWorkspace = {
 }
 
 export interface GetProjects {
+  pat: string | null
+  organizationUrl: string | null
 }
 
 export const defaultGetProjects: GetProjects = {
+  pat: null,
+  organizationUrl: null,
 }
 
 export interface CreateTaskViewmodel {
@@ -151,6 +165,8 @@ export const defaultWorkspaceViewmodel: WorkspaceViewmodel = {
 export interface Workspace {
   id: string
   displayName: string | null
+  pat: FSharpOption_string
+  organizationUrl: FSharpOption_string
   projectId: string
   areaPath: string | null
   apiKeys: (string | null)[]
@@ -159,6 +175,8 @@ export interface Workspace {
 export const defaultWorkspace: Workspace = {
   id: "00000000-0000-0000-0000-000000000000",
   displayName: null,
+  pat: {} as any,
+  organizationUrl: {} as any,
   projectId: "00000000-0000-0000-0000-000000000000",
   areaPath: null,
   apiKeys: [],

@@ -24,6 +24,8 @@ import {
   UpsertWorkspace,
 } from "../ts-models/AzdoTasks"
 import { Link } from "react-router-dom"
+import { useToast } from "@chakra-ui/react"
+import { RenderObject } from "glow-core"
 
 function makeid(length: number) {
   var result = ""
@@ -43,11 +45,16 @@ export function UpsertAreaForm({
 }) {
   const [deleteWorkspace] = useTypedAction("/api/delete-workspace")
   const navigate = useNavigate()
+  const toast = useToast()
+  // return <RenderObject {...initialValues} />
   return (
-    <Box background="gray.100" flex={1}>
+    <Box background="gray.200" flex={1}>
       <TypedForm
         actionName="/api/upsert-workspace"
         initialValues={initialValues}
+        onSuccess={() => {
+          toast({ title: "Success", status: "success" })
+        }}
       >
         {(f) => (
           <Flex direction="column">
@@ -60,7 +67,11 @@ export function UpsertAreaForm({
             >
               <Heading as="h2">{f.values.displayName}</Heading>
               <ButtonGroup size="md" isAttached={true}>
-                <Button onClick={() => f.submitForm()} background="gray.200">
+                <Button
+                  isLoading={f.isSubmitting}
+                  onClick={() => f.submitForm()}
+                  background="gray.200"
+                >
                   Save
                 </Button>
                 {initialValues.id !== null && (
@@ -78,29 +89,56 @@ export function UpsertAreaForm({
             </Stack>
             <Stack padding={4} spacing={4}>
               <Field name="displayName">
-                {({ field, form }: any) => (
+                {({ field, form }: FieldProps) => (
                   <FormControl
                     size="sm"
-                    isInvalid={form.errors.name && form.touched.title}
+                    isInvalid={Boolean(form.errors.name && form.touched.title)}
                   >
                     <FormLabel htmlFor="displayName">Displayname</FormLabel>
                     <Input
                       {...field}
                       size="sm"
                       id="displayName"
-                      placeholder="Title"
+                      placeholder="Displayname"
                     />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
+              <Field name="organizationUrl">
+                {({ field, form }: FieldProps) => (
+                  <FormControl>
+                    <FormLabel htmlFor="organizationUrl">
+                      Organization URL
+                    </FormLabel>
+                    <Input
+                      {...field}
+                      size="sm"
+                      id="organizationUrl"
+                      placeholder="OrganizationUrl"
+                    />
+                    <FormHelperText>{f.values.organizationUrl}</FormHelperText>
+                    <FormErrorMessage>
+                      {form.errors.organizationUrl}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+              <Field name="pat">
+                {({ field, form }: FieldProps) => (
+                  <FormControl>
+                    <FormLabel htmlFor="pat">
+                      Personal Accces Token (PAT)
+                    </FormLabel>
+                    <Input {...field} size="sm" id="pat" placeholder="PAT" />
+                    <FormHelperText>{f.values.pat}</FormHelperText>
+                    <FormErrorMessage>{form.errors.pat}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
               <Field name="projectId">
                 {({ form }: FieldProps) => (
-                  <FormControl
-                  // isInvalid={
-                  //   form.errors.entity?.projectId && form.touched.entity.projectId
-                  // }
-                  >
+                  <FormControl>
                     <FormLabel htmlFor="projectId">Project</FormLabel>
                     <SelectProject
                       onChange={(v) => form.setFieldValue("projectId", v)}
@@ -112,11 +150,7 @@ export function UpsertAreaForm({
               </Field>
               <Field name="areaPath">
                 {({ form }: FieldProps) => (
-                  <FormControl
-                  // isInvalid={
-                  //   form.errors.entity?.projectId && form.touched.entity.projectId
-                  // }
-                  >
+                  <FormControl>
                     <FormLabel htmlFor="areaPath">Area Path</FormLabel>
                     <SelectArea
                       projectId={f.values.projectId}
@@ -129,11 +163,7 @@ export function UpsertAreaForm({
               </Field>
               <Field name="apiKeys[0]">
                 {({ field }: FieldProps) => (
-                  <FormControl
-                  // isInvalid={
-                  //   form.errors.entity?.projectId && form.touched.entity.projectId
-                  // }
-                  >
+                  <FormControl>
                     <FormLabel htmlFor="apiKeys[0]">Api Key 0</FormLabel>
                     <Stack>
                       <InputGroup size="sm">
@@ -189,5 +219,16 @@ export function AreaDetail() {
   if (!id) {
     return <div>Not found</div>
   }
-  return <UpsertAreaForm initialValues={data} />
+  const { organizationUrl, pat, ...rest } = data
+
+  const initialValues: UpsertWorkspace = {
+    ...rest,
+    organizationUrl:
+      organizationUrl?.case === "Some"
+        ? organizationUrl.fields[0] || null
+        : null,
+    pat: pat?.case === "Some" ? pat.fields[0] || null : null,
+  }
+
+  return <UpsertAreaForm initialValues={initialValues} />
 }

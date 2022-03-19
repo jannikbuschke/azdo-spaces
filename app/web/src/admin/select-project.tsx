@@ -1,34 +1,48 @@
 import * as React from "react"
 import { useTypedQuery } from "../ts-models/api"
-import { Select } from "@chakra-ui/react"
+import { Button, Select, Spinner } from "@chakra-ui/react"
 import {
   defaultWorkItemClassificationNode,
   WorkItemClassificationNode,
 } from "../ts-models/Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
+import { useFormikContext } from "formik"
+import { ErrorBanner } from "glow-core"
 
 export function SelectProject({
   onChange,
 }: {
   onChange: (id: string | null) => void
 }) {
-  const { data } = useTypedQuery("/api/get-projects", {
-    input: {},
+  const {
+    values: { organizationUrl, pat },
+  } = useFormikContext<{
+    organizationUrl: string
+    pat: string
+  }>()
+
+  const { data, error, status, refetch } = useTypedQuery("/api/get-projects", {
+    input: { organizationUrl, pat },
     placeholder: [],
   })
   return (
-    <Select
-      placeholder="Select project"
-      size="sm"
-      onChange={(e) => {
-        onChange(e.target.value)
-      }}
-    >
-      {data.map((v) => (
-        <option key={v.id} value={v.id}>
-          {v.name}
-        </option>
-      ))}
-    </Select>
+    <>
+      {/* <div>Status = {status}</div>
+      <Button onClick={() => refetch()}>Reload</Button> */}
+      <Select
+        placeholder={"Select project"}
+        size="sm"
+        onChange={(e) => {
+          onChange(e.target.value)
+        }}
+      >
+        {data.map((v) => (
+          <option key={v.id} value={v.id}>
+            {v.name}
+          </option>
+        ))}
+      </Select>
+      <ErrorBanner message={error} />
+    </>
   )
 }
 
@@ -49,11 +63,22 @@ export function SelectArea({
   projectId: string | null
   onChange: (id: string | null) => void
 }) {
-  const { data } = useTypedQuery("/api/get-area-paths", {
-    input: { projectId },
-    placeholder: defaultWorkItemClassificationNode,
-    queryOptions: { enabled: projectId !== null },
-  })
+  const { values } = useFormikContext<{
+    organizationUrl: string
+    pat: string
+  }>()
+  const { data, error, status, refetch } = useTypedQuery(
+    "/api/get-area-paths",
+    {
+      input: {
+        projectId,
+        organizationUrl: values.organizationUrl,
+        pat: values.pat,
+      },
+      placeholder: defaultWorkItemClassificationNode,
+      queryOptions: { enabled: projectId !== null },
+    },
+  )
   React.useEffect(() => {
     if (projectId === null) {
       onChange(null)
@@ -63,7 +88,10 @@ export function SelectArea({
   const nodes = flatMap(data)
   return (
     <div>
+      {/* <div>Status = {status}</div>
+      <Button onClick={() => refetch()}>Reload</Button> */}
       <Select
+        colorScheme="blue"
         placeholder="Select AreaPath"
         size="sm"
         onChange={(e) => {
@@ -76,6 +104,7 @@ export function SelectArea({
           </option>
         ))}
       </Select>
+      <ErrorBanner message={error} />
       {/* <RenderObject {...data} /> */}
     </div>
   )
