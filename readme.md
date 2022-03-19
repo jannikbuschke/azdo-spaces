@@ -1,8 +1,15 @@
 This app allows to u expose azdo areas to users without account. The goal is to provide easy view or read access to certain parts of your azure devops backlog.
 
+# Todoes
+
+- [ ] Url/PAT per space
+- [ ] Filters
+- [ ] Sortings
+- [ ] Remove need for custom configurations
+
 # Local setup
 
-Preqrequesites: dotnet 6, node/npm9, postgreSQL
+Preqrequesites: dotnet 6, node/npm, postgreSQL
 
 ```
 git clone https://github.com/jannikbuschke/azdo-spaces --recursive
