@@ -59,11 +59,13 @@ export const defaultGetComments: GetComments = {
 export interface GetTasks {
   workspaceId: string
   apiKey: string | null
+  stateFilter: string | null
 }
 
 export const defaultGetTasks: GetTasks = {
   workspaceId: "00000000-0000-0000-0000-000000000000",
   apiKey: null,
+  stateFilter: null,
 }
 
 export interface GetWorkspaceViewmodel {

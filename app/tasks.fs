@@ -169,6 +169,7 @@ module AzdoTasks =
     interface IRequest<List<WorkItem>>
     member val WorkspaceId = Guid.Empty with get, set
     member val ApiKey = String.Empty with get, set
+    member val StateFilter = Unchecked.defaultof<string> with get,set
 
   type WorkspaceViewmodel() =
     member val WorkspaceId = Guid.Empty with get, set
@@ -216,9 +217,9 @@ module AzdoTasks =
               .Substring(1)
 
           Console.WriteLine areaPath
-
+          let stateFilter = if request.StateFilter = null then "" else $"AND [System.State] = '{request.StateFilter}'"
           let query =
-            $"SELECT [System.Id], [System.Title], [System.State], [Id], [Title], [State], [Microsoft.VSTS.Common.Priority] FROM workitems WHERE [System.AreaPath] = '{areaPath}' ORDER BY [System.CreatedDate] asc"
+            $"SELECT [System.Id], [System.Title], [System.State], [Id], [Title], [State], [Microsoft.VSTS.Common.Priority] FROM workitems WHERE [System.AreaPath] = '{areaPath}' {stateFilter} ORDER BY [System.CreatedDate] asc"
 
           let workspace =
             session

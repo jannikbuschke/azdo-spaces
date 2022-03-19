@@ -51,10 +51,12 @@ export function TaskList({
       queryOptions: { enabled: Boolean(apiKey) },
     },
   )
+  const [stateFilter, setStateFilter] = React.useState<string | null>(null)
+
   const { data, refetch, error, isFetching: isFetchingTasks } = useTypedQuery(
     "/api/get-tasks",
     {
-      input: { workspaceId, apiKey },
+      input: { workspaceId, apiKey, stateFilter },
       placeholder: [],
     },
   )
@@ -74,9 +76,20 @@ export function TaskList({
           <Button borderRadius={0} onClick={() => refetch()}>
             Reload
           </Button>
-          <Button borderRadius={0} onClick={() => navigate("./create")}>
-            Create
-          </Button>
+          <Button onClick={() => navigate("./create")}>Create</Button>
+        </ButtonGroup>
+        <ButtonGroup size="sm" isAttached={true}>
+          {["New", "Active", "Resolved", "Closed"].map((v) => (
+            <Button
+              background={stateFilter === v ? "black.300" : undefined}
+              onClick={() => {
+                if (stateFilter === v) setStateFilter(null)
+                else setStateFilter(v)
+              }}
+            >
+              {v}
+            </Button>
+          ))}
         </ButtonGroup>
       </Stack>
       {/* <SelectProject onChange={(v) => setProjectId(v)} /> */}
