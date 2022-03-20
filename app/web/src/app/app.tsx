@@ -10,6 +10,7 @@ import { TaskDetail } from "../spaces/task-detail"
 import { Routes, Route, Outlet } from "react-router"
 import Header from "./header"
 import Gslr from "./header-2"
+import { ConfigreOpenIdConnectRoutes } from "../super-admin/configure-openid-connect"
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         </Route>
       </Routes>
       <AdminRouts />
+      <ConfigreOpenIdConnectRoutes />
     </Flex>
   )
 }

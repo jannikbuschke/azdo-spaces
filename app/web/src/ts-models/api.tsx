@@ -6,11 +6,15 @@ import { useAction, useSubmit, UseSubmit, ProblemDetails } from "glow-core/es/ac
 import { Formik, FormikConfig, FormikFormProps } from "formik"
 import { Form } from "formik-antd"
 import * as AzdoTasks from "./AzdoTasks"
+import * as Glow_TestAutomation from "./Glow.TestAutomation"
+import * as Glow_Azure_AzureKeyVault from "./Glow.Azure.AzureKeyVault"
 import * as Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models from "./Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
 import * as Microsoft_VisualStudio_Services_WebApi from "./Microsoft.VisualStudio.Services.WebApi"
 import * as Microsoft_VisualStudio_Services_Common from "./Microsoft.VisualStudio.Services.Common"
 import * as Microsoft_FSharp_Core from "./Microsoft.FSharp.Core"
 import * as Microsoft_TeamFoundation_Core_WebApi from "./Microsoft.TeamFoundation.Core.WebApi"
+import * as MediatR from "./MediatR"
+import * as Glow_Core_Profiles from "./Glow.Core.Profiles"
 
 type QueryInputs = {
   "/api/get-task": AzdoTasks.GetTask,
@@ -22,6 +26,7 @@ type QueryInputs = {
   "/api/get-workspaces": AzdoTasks.GetAreas,
   "/api/get-workspace": AzdoTasks.GetArea,
   "/api/get-projects": AzdoTasks.GetProjects,
+  "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.GetAvailableFakeUsers,
 }
 type QueryOutputs = {
   "/api/get-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
@@ -33,18 +38,21 @@ type QueryOutputs = {
   "/api/get-workspaces": AzdoTasks.Workspace[],
   "/api/get-workspace": AzdoTasks.Workspace,
   "/api/get-projects": Microsoft_TeamFoundation_Core_WebApi.TeamProjectReference[],
+  "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.FakeUsers,
 }
 export type Outputs = {
   "/api/create-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
   "/api/update-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
   "/api/delete-workspace": AzdoTasks.Workspace,
   "/api/upsert-workspace": AzdoTasks.Workspace,
+  "/api/glow/set-openid-connect-options": MediatR.Unit,
 }
 export type Actions = {
   "/api/create-task": AzdoTasks.CreateTask,
   "/api/update-task": AzdoTasks.UpdateTask,
   "/api/delete-workspace": AzdoTasks.DeleteWorkspace,
   "/api/upsert-workspace": AzdoTasks.UpsertWorkspace,
+  "/api/glow/set-openid-connect-options": Glow_Azure_AzureKeyVault.SetOpenIdConnectOptions,
 }
 
 type TagWithKey<TagName extends string, T> = {

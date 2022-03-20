@@ -205,6 +205,7 @@ resource keyvault_resource 'Microsoft.KeyVault/vaults@2016-10-01' = {
         objectId: webSite.identity.principalId
         permissions: {
           secrets: [
+            'set'
             'get'
             'list'
           ]

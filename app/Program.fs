@@ -1,11 +1,8 @@
 namespace sample.fs
 
-open System.Security.Claims
-open System.Threading
+open Glow.Azure
 open Microsoft.AspNetCore.Authentication.Cookies
 open Microsoft.AspNetCore.Http
-open Microsoft.AspNetCore.Http.Features
-open Weasel.Postgresql
 open Marten
 open System
 open System.Reflection
@@ -17,12 +14,10 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Serilog
 open Glow.Core
-open Microsoft.EntityFrameworkCore
-open EFCoreSecondLevelCacheInterceptor
 open Glow.Tests
-open Microsoft.AspNetCore.Authentication
 open Glow.Azdo.Authentication
 open Glow.TypeScript
+open Glow.Azure.AzureKeyVault
 
 #nowarn "20"
 
@@ -64,9 +59,10 @@ module Program =
         let services = builder.Services
 
         services.AddControllers()
-        let assemblies = [| Assembly.GetEntryAssembly() |]
+        let assemblies = [| Assembly.GetEntryAssembly(); typedefof<GlowModuleAzure>.Assembly  |]
 
         services.AddGlowApplicationServices(null, null, assemblies)
+        services.AddAzureKeyvaultClientProvider()
 
         services.AddTypescriptGeneration [| TsGenerationOptions(
                                                 Assemblies = assemblies,
@@ -108,6 +104,11 @@ module Program =
             .AddMarten(options)
             .UseLightweightSessions()
 
+
+        builder.AddKeyVaultAsConfigurationProviderIfNameConfigured()
+
+        builder.Services.AddGlowAadIntegration(builder.Environment, builder.Configuration)
+
         builder.Services.AddAuthorization
             (fun options -> options.AddPolicy("Authenticated", (fun v -> v.RequireAuthenticatedUser() |> ignore)))
 
@@ -119,11 +120,13 @@ module Program =
         let configuration =
             app.Services.GetService<IConfiguration>()
 
-        Log.Logger <- LoggerConfiguration()
-                        .ReadFrom.Configuration(configuration)
-                        .WriteTo.Console()
-                        // .WriteTo.File("logs/log-{date}.txt")
-                        .CreateLogger()
+        Log.Logger <-
+            LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .WriteTo.Console()
+                // .WriteTo.File("logs/log-{date}.txt")
+                .CreateLogger()
+
         Log.Logger.Information "logger reconfigured"
 
         app.UseResponseCaching()

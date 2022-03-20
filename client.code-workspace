@@ -9,6 +9,9 @@
     },
     {
       "path": "glow\\glow.beta-web"
+    },
+    {
+      "path": "glow\\glow.azure-web"
     }
   ],
   "settings": {}
