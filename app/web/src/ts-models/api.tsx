@@ -2,7 +2,12 @@
 import * as React from "react"
 import { QueryOptions, UseQueryOptions } from "react-query"
 import { useApi, ApiResult, notifySuccess, notifyError } from "glow-core"
-import { useAction, useSubmit, UseSubmit, ProblemDetails } from "glow-core/es/actions/use-submit"
+import {
+  useAction,
+  useSubmit,
+  UseSubmit,
+  ProblemDetails,
+} from "glow-core/es/actions/use-submit"
 import { Formik, FormikConfig, FormikFormProps } from "formik"
 import { Form } from "formik-antd"
 import * as AzdoTasks from "./AzdoTasks"
@@ -15,49 +20,50 @@ import * as Microsoft_FSharp_Core from "./Microsoft.FSharp.Core"
 import * as Microsoft_TeamFoundation_Core_WebApi from "./Microsoft.TeamFoundation.Core.WebApi"
 import * as MediatR from "./MediatR"
 import * as Glow_Core_Profiles from "./Glow.Core.Profiles"
+import { useNotifyError } from "glow-core/es/errors/notify-error-context"
 
 type QueryInputs = {
-  "/api/get-task": AzdoTasks.GetTask,
-  "/api/get-create-task-viewmodel": AzdoTasks.GetCreateTaskViewmodel,
-  "/api/get-comments": AzdoTasks.GetComments,
-  "/api/get-tasks": AzdoTasks.GetTasks,
-  "/api/get-workspace-viewmodel": AzdoTasks.GetWorkspaceViewmodel,
-  "/api/get-area-paths": AzdoTasks.GetAreaPaths,
-  "/api/get-workspaces": AzdoTasks.GetAreas,
-  "/api/get-workspace": AzdoTasks.GetArea,
-  "/api/get-projects": AzdoTasks.GetProjects,
-  "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.GetAvailableFakeUsers,
+  "/api/get-task": AzdoTasks.GetTask
+  "/api/get-create-task-viewmodel": AzdoTasks.GetCreateTaskViewmodel
+  "/api/get-comments": AzdoTasks.GetComments
+  "/api/get-tasks": AzdoTasks.GetTasks
+  "/api/get-workspace-viewmodel": AzdoTasks.GetWorkspaceViewmodel
+  "/api/get-area-paths": AzdoTasks.GetAreaPaths
+  "/api/get-workspaces": AzdoTasks.GetAreas
+  "/api/get-workspace": AzdoTasks.GetArea
+  "/api/get-projects": AzdoTasks.GetProjects
+  "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.GetAvailableFakeUsers
 }
 type QueryOutputs = {
-  "/api/get-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
-  "/api/get-create-task-viewmodel": AzdoTasks.CreateTaskViewmodel,
-  "/api/get-comments": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemComments,
-  "/api/get-tasks": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem[],
-  "/api/get-workspace-viewmodel": AzdoTasks.WorkspaceViewmodel,
-  "/api/get-area-paths": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemClassificationNode,
-  "/api/get-workspaces": AzdoTasks.Workspace[],
-  "/api/get-workspace": AzdoTasks.Workspace,
-  "/api/get-projects": Microsoft_TeamFoundation_Core_WebApi.TeamProjectReference[],
-  "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.FakeUsers,
+  "/api/get-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem
+  "/api/get-create-task-viewmodel": AzdoTasks.CreateTaskViewmodel
+  "/api/get-comments": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemComments
+  "/api/get-tasks": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem[]
+  "/api/get-workspace-viewmodel": AzdoTasks.WorkspaceViewmodel
+  "/api/get-area-paths": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemClassificationNode
+  "/api/get-workspaces": AzdoTasks.Workspace[]
+  "/api/get-workspace": AzdoTasks.Workspace
+  "/api/get-projects": Microsoft_TeamFoundation_Core_WebApi.TeamProjectReference[]
+  "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.FakeUsers
 }
 export type Outputs = {
-  "/api/create-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
-  "/api/update-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem,
-  "/api/delete-workspace": AzdoTasks.Workspace,
-  "/api/upsert-workspace": AzdoTasks.Workspace,
-  "/api/glow/set-openid-connect-options": MediatR.Unit,
+  "/api/create-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem
+  "/api/update-task": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem
+  "/api/delete-workspace": AzdoTasks.Workspace
+  "/api/upsert-workspace": AzdoTasks.Workspace
+  "/api/glow/set-openid-connect-options": MediatR.Unit
 }
 export type Actions = {
-  "/api/create-task": AzdoTasks.CreateTask,
-  "/api/update-task": AzdoTasks.UpdateTask,
-  "/api/delete-workspace": AzdoTasks.DeleteWorkspace,
-  "/api/upsert-workspace": AzdoTasks.UpsertWorkspace,
-  "/api/glow/set-openid-connect-options": Glow_Azure_AzureKeyVault.SetOpenIdConnectOptions,
+  "/api/create-task": AzdoTasks.CreateTask
+  "/api/update-task": AzdoTasks.UpdateTask
+  "/api/delete-workspace": AzdoTasks.DeleteWorkspace
+  "/api/upsert-workspace": AzdoTasks.UpsertWorkspace
+  "/api/glow/set-openid-connect-options": Glow_Azure_AzureKeyVault.SetOpenIdConnectOptions
 }
 
 type TagWithKey<TagName extends string, T> = {
   [K in keyof T]: { [_ in TagName]: K } & T[K]
-};
+}
 
 export type ActionTable = TagWithKey<"url", Actions>
 
@@ -78,30 +84,32 @@ export const useTypedAction: TypedActionHook = <
   return s
 }
 
-type QueryTable = TagWithKey<"url", QueryInputs>;
+type QueryTable = TagWithKey<"url", QueryInputs>
 
-export function useTypedQuery<ActionName extends keyof QueryTable>(key: ActionName, {
+export function useTypedQuery<ActionName extends keyof QueryTable>(
+  key: ActionName,
+  {
     placeholder,
     input,
-    queryOptions
+    queryOptions,
   }: {
-    placeholder: QueryOutputs[ActionName],
-    input:  QueryInputs[ActionName]
+    placeholder: QueryOutputs[ActionName]
+    input: QueryInputs[ActionName]
     queryOptions?: UseQueryOptions<QueryOutputs[ActionName]>
-  }): ApiResult<QueryOutputs[ActionName]> {
-
-  const { data, ...rest} = useApi({
+  },
+): ApiResult<QueryOutputs[ActionName]> {
+  const { data, ...rest } = useApi({
     url: key,
-    method:"POST",
+    method: "POST",
     payload: input,
     // todo: find defaultPlaceholder
     placeholder: placeholder,
-    queryOptions: queryOptions
+    queryOptions: queryOptions,
   })
 
   const result = data as QueryOutputs[ActionName]
 
-  return { data: result, ...rest} as any
+  return { data: result, ...rest } as any
 }
 
 export function TypedForm<ActionName extends keyof ActionTable>({
@@ -118,6 +126,7 @@ export function TypedForm<ActionName extends keyof ActionTable>({
   onError?: (error: ProblemDetails) => void
 }) {
   const [submit, validate] = useTypedAction<ActionName>(actionName)
+  const notify = useNotifyError()
   return (
     <Formik
       validate={validate}
@@ -131,7 +140,7 @@ export function TypedForm<ActionName extends keyof ActionTable>({
           onSuccess && onSuccess(response.payload)
         } else {
           onError && onError(response.error)
-          !onError && notifyError(response.error)
+          !onError && notify(response.error)
         }
       }}
     >
@@ -140,6 +149,6 @@ export function TypedForm<ActionName extends keyof ActionTable>({
           {typeof children === "function" ? children(f) : children}
         </Form>
       )}
-    </Formik>)
+    </Formik>
+  )
 }
-

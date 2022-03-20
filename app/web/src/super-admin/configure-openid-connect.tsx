@@ -99,8 +99,6 @@ export function ConfigureOpenid() {
             </Stack>
           )}
         </TypedForm>
-        {/* Confige openid
-        <div>child: {<Outlet />}</div> */}
       </Box>
     </Flex>
   )
