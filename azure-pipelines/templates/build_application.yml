@@ -71,6 +71,7 @@ stages:
               npm ci
               Write-Output "Running npm bootstrap..."
               npm run bootstrap
+              npm run bootstrap
               Write-Output "Running npm tsc..."
               npm run tsc
 
