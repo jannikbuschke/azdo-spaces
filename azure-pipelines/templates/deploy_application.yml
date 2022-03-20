@@ -99,3 +99,12 @@ stages:
                     WebAppName: $(bicep_deployment.app_service_name)
                     enableCustomDeployment: true
                     ExcludeFilesFromAppDataFlag: false
+                    AppSettings: |
+                      -KeyvaultName $(bicep_deployment.key_vault_name)
+                      -APPINSIGHTS_INSTRUMENTATIONKEY $(bicep_deployment.app_insights_instrumentation_key)
+
+                    # -OpenIdConnect:TenantId $(tenant_id)
+                    # -OpenIdConnect:ClientId $(client_id)
+                    # -OpenIdConnect:Instance https://login.microsoftonline.com/
+                    # -OpenIdConnect:BaseUrl https://$(bicep_deployment.app_service_name).azurewebsites.net
+                  # -OpenIdConnect:CallbackPath /signin-oidc
