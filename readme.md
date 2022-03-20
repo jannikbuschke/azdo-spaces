@@ -2,8 +2,16 @@ This app allows to u expose azdo areas to users without account. The goal is to 
 
 # Todoes
 
-- [ ] Url/PAT per space
-- [ ] Filters
+- [x] Url/PAT per space
+- [x] Filters
+- [/] Add KeyVault configuration, allow setting keyvault values
+  - [x] Add extension method in glow for minimal api
+  - [ ] Add health check?
+  - [ ] Test in prod environment
+- [ ] Install Wizard
+- [ ] Allow configuring ClientSecret (and maybe ClientId, TenantId)
+- [ ] "Installmode" flags
+- [ ] AAD Integration for admin routes
 - [ ] Sortings
 - [ ] Remove need for custom configurations
 
