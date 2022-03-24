@@ -118,7 +118,6 @@ export function TypedForm<ActionName extends keyof ActionTable>({
   onError?: (error: ProblemDetails) => void
 }) {
   const [submit, validate] = useTypedAction<ActionName>(actionName)
-  const notify = useNotifyError()
   return (
     <Formik
       validate={validate}
