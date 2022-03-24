@@ -87,6 +87,8 @@ stages:
                       # write output for use in app_service_deployment
                       write-output "##vso[task.setvariable variable=app_service_name;isOutput=true]$($result.Outputs.appServiceName.Value)"
                       write-output "##vso[task.setvariable variable=key_vault_name;isOutput=true]$($result.Outputs.keyVaultName.Value)"
+                      write-output "##vso[task.setvariable variable=app_insights_instrumentation_key;isOutput=true]$($result.Outputs.appInsightsInstrumentationKey.Value)"
+
 
                 - task: AzureRmWebAppDeployment@4
                   name: app_service_deplyoment

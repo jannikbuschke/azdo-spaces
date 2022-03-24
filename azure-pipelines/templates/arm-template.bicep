@@ -255,3 +255,4 @@ output appServiceName string = appService_name
 output keyVaultName string = keyvault_name
 output siteUri string = webSite.properties.hostNames[0]
 output sqlSvrFqdn string = sqlserver.properties.fullyQualifiedDomainName
+output appInsightsInstrumentationKey string = appInsights.properties.InstrumentationKey
