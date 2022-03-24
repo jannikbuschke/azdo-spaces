@@ -124,7 +124,7 @@ module Program =
             LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .WriteTo.Console()
-                // .WriteTo.File("logs/log-{date}.txt")
+                .WriteTo.File("logs/log.txt")
                 .CreateLogger()
 
         Log.Logger.Information "logger reconfigured"
