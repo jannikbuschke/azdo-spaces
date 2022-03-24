@@ -78,18 +78,6 @@ export const defaultGetWorkspaceViewmodel: GetWorkspaceViewmodel = {
   apiKey: null,
 }
 
-export interface GetAreaPaths {
-  projectId: string | null
-  pat: string | null
-  organizationUrl: string | null
-}
-
-export const defaultGetAreaPaths: GetAreaPaths = {
-  projectId: null,
-  pat: null,
-  organizationUrl: null,
-}
-
 export interface DeleteWorkspace {
   id: string
 }
@@ -130,6 +118,18 @@ export const defaultUpsertWorkspace: UpsertWorkspace = {
   projectId: null,
   areaPath: null,
   apiKeys: [],
+}
+
+export interface GetAreaPaths {
+  projectId: string | null
+  pat: string | null
+  organizationUrl: string | null
+}
+
+export const defaultGetAreaPaths: GetAreaPaths = {
+  projectId: null,
+  pat: null,
+  organizationUrl: null,
 }
 
 export interface GetProjects {

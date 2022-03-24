@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="models.fs" />
+    <Compile Include="projects-and-area-paths.fs" />
     <Compile Include="spaces.fs" />
     <Compile Include="tasks.fs" />
     <Compile Include="Program.fs" />
