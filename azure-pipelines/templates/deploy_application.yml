@@ -100,7 +100,7 @@ stages:
                     enableCustomDeployment: true
                     ExcludeFilesFromAppDataFlag: false
                     AppSettings: |
-                      -KeyvaultName $(bicep_deployment.key_vault_name)
+                      -KeyvaultName $(bicep_deployment.key_vault_name) 
                       -APPINSIGHTS_INSTRUMENTATIONKEY $(bicep_deployment.app_insights_instrumentation_key)
 
                     # -OpenIdConnect:TenantId $(tenant_id)

@@ -8,6 +8,7 @@ This app allows to u expose azdo areas to users without account. The goal is to 
   - [x] Add extension method in glow for minimal api
   - [ ] Add health check?
   - [ ] Test in prod environment
+- [ ] Pipeline issue, "parameter cannot be empty", probably app insights key or keyvaultname
 - [ ] Install Wizard
 - [ ] Allow configuring ClientSecret (and maybe ClientId, TenantId)
 - [ ] "Installmode" flags
