@@ -17,7 +17,6 @@ open Microsoft.VisualStudio.Services.WebApi.Patch
 open Microsoft.VisualStudio.Services.WebApi.Patch.Json
 open Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models
 open Spaces
-open Models
 open AzdoProjects
 
 module AzdoTasks =
