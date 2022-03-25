@@ -9,7 +9,7 @@ open Glow.Azdo.Authentication
 open MediatR
 open Glow.Core.Actions
 open Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models
-open Models
+open Spaces
 
 module AzdoProjects =
 

@@ -6,10 +6,17 @@ open Marten
 open System.Linq
 open MediatR
 open Glow.Core.Actions
-open Models
 
 module Spaces =
 
+  type Workspace =
+    { Id: Guid
+      DisplayName: string
+      Pat: string option
+      OrganizationUrl: string option
+      ProjectId: Guid
+      AreaPath: string
+      ApiKeys: List<string> }
 
   [<Action(Route = "api/delete-workspace", AllowAnonymous = true)>]
   type DeleteWorkspace() =
