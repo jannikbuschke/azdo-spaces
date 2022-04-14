@@ -18,20 +18,24 @@ open Microsoft.VisualStudio.Services.WebApi.Patch.Json
 open Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models
 open Spaces
 open AzdoProjects
+open Glow.Validation
 
 module AzdoTasks =
 
   [<Action(Route = "api/get-task", AllowAnonymous = true)>]
   type GetTask() =
     interface IRequest<WorkItem>
-    member val TaskId = 0 with get, set
+    [<NotEmpty>]
+    member val WorkspaceId = Unchecked.defaultof<Guid> with get,set
+    [<System.ComponentModel.DataAnnotations.RequiredAttribute>]
+    member val TaskId = Unchecked.defaultof<int> with get, set
 
-  type GetTaskHandler(clients: AzdoClients) =
+  type GetTaskHandler(clients: AzdoClients, session:IDocumentSession, logger:ILogger<GetTaskHandler>) =
     interface IRequestHandler<GetTask, WorkItem> with
       member this.Handle(request, token) =
         task {
-          let! client = clients.GetAppClient<WorkItemTrackingHttpClient>()
-
+          let! workspace = session.LoadAsync<Workspace>(request.WorkspaceId)
+          let! client = getClientForWorkspace<WorkItemTrackingHttpClient> clients workspace
           let! data =
             client.GetWorkItemAsync(
               id = request.TaskId,

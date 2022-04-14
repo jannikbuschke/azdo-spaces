@@ -5,10 +5,12 @@ import { FSharpOption_string } from "./Microsoft.FSharp.Core"
 import { defaultFSharpOption_string } from "./Microsoft.FSharp.Core"
 
 export interface GetTask {
+  workspaceId: string
   taskId: number
 }
 
 export const defaultGetTask: GetTask = {
+  workspaceId: "00000000-0000-0000-0000-000000000000",
   taskId: 0,
 }
 
@@ -78,6 +80,28 @@ export const defaultGetWorkspaceViewmodel: GetWorkspaceViewmodel = {
   apiKey: null,
 }
 
+export interface GetAreaPaths {
+  projectId: string | null
+  pat: string | null
+  organizationUrl: string | null
+}
+
+export const defaultGetAreaPaths: GetAreaPaths = {
+  projectId: null,
+  pat: null,
+  organizationUrl: null,
+}
+
+export interface GetProjects {
+  pat: string | null
+  organizationUrl: string | null
+}
+
+export const defaultGetProjects: GetProjects = {
+  pat: null,
+  organizationUrl: null,
+}
+
 export interface DeleteWorkspace {
   id: string
 }
@@ -118,28 +142,6 @@ export const defaultUpsertWorkspace: UpsertWorkspace = {
   projectId: null,
   areaPath: null,
   apiKeys: [],
-}
-
-export interface GetAreaPaths {
-  projectId: string | null
-  pat: string | null
-  organizationUrl: string | null
-}
-
-export const defaultGetAreaPaths: GetAreaPaths = {
-  projectId: null,
-  pat: null,
-  organizationUrl: null,
-}
-
-export interface GetProjects {
-  pat: string | null
-  organizationUrl: string | null
-}
-
-export const defaultGetProjects: GetProjects = {
-  pat: null,
-  organizationUrl: null,
 }
 
 export interface CreateTaskViewmodel {

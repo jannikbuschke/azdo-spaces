@@ -11,8 +11,8 @@ import * as Glow_Azure_AzureKeyVault from "./Glow.Azure.AzureKeyVault"
 import * as Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models from "./Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models"
 import * as Microsoft_VisualStudio_Services_WebApi from "./Microsoft.VisualStudio.Services.WebApi"
 import * as Microsoft_VisualStudio_Services_Common from "./Microsoft.VisualStudio.Services.Common"
-import * as Microsoft_FSharp_Core from "./Microsoft.FSharp.Core"
 import * as Microsoft_TeamFoundation_Core_WebApi from "./Microsoft.TeamFoundation.Core.WebApi"
+import * as Microsoft_FSharp_Core from "./Microsoft.FSharp.Core"
 import * as MediatR from "./MediatR"
 import * as Glow_Core_Profiles from "./Glow.Core.Profiles"
 
@@ -22,10 +22,10 @@ type QueryInputs = {
   "/api/get-comments": AzdoTasks.GetComments,
   "/api/get-tasks": AzdoTasks.GetTasks,
   "/api/get-workspace-viewmodel": AzdoTasks.GetWorkspaceViewmodel,
-  "/api/get-workspaces": AzdoTasks.GetAreas,
-  "/api/get-workspace": AzdoTasks.GetArea,
   "/api/get-area-paths": AzdoTasks.GetAreaPaths,
   "/api/get-projects": AzdoTasks.GetProjects,
+  "/api/get-workspaces": AzdoTasks.GetAreas,
+  "/api/get-workspace": AzdoTasks.GetArea,
   "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.GetAvailableFakeUsers,
 }
 type QueryOutputs = {
@@ -34,10 +34,10 @@ type QueryOutputs = {
   "/api/get-comments": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemComments,
   "/api/get-tasks": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItem[],
   "/api/get-workspace-viewmodel": AzdoTasks.WorkspaceViewmodel,
-  "/api/get-workspaces": AzdoTasks.Workspace[],
-  "/api/get-workspace": AzdoTasks.Workspace,
   "/api/get-area-paths": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemClassificationNode,
   "/api/get-projects": Microsoft_TeamFoundation_Core_WebApi.TeamProjectReference[],
+  "/api/get-workspaces": AzdoTasks.Workspace[],
+  "/api/get-workspace": AzdoTasks.Workspace,
   "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.FakeUsers,
 }
 export type Outputs = {

@@ -1,4 +1,4 @@
-This app allows to u expose azdo areas to users without account. The goal is to provide easy view or read access to certain parts of your azure devops backlog.
+This app allows to you expose azdo areas to users without account. The goal is to provide easy/unauthenticated read/write access to certain parts of your azure devops backlog.
 
 # Todoes
 

@@ -21,17 +21,19 @@ import { duration } from "moment"
 import { Field as FormikField } from "formik"
 import { RichTextEditor } from "../rich-text-editor"
 import { useToast } from "@chakra-ui/react"
+import { ErrorBanner } from "../shared/error-banner"
 
 export function TaskDetail() {
-  const { id } = useParams()
+  const { id, spaceId } = useParams<{ id: string; spaceId: string }>()
   const taskId = Number.parseInt(id!)
   const { data, refetch, isFetching } = useTypedQuery("/api/get-task", {
-    input: { taskId },
+    input: { taskId, workspaceId: spaceId! },
     placeholder: defaultWorkItem,
   })
-  const { data: comments } = useTypedQuery("/api/get-comments", {
+  const { data: comments, error } = useTypedQuery("/api/get-comments", {
     input: { taskId },
     placeholder: defaultWorkItemComments,
+    queryOptions: { enabled: false },
   })
   const toast = useToast()
   const [key, setKey] = React.useState(1)
@@ -43,6 +45,7 @@ export function TaskDetail() {
   return (
     <Box background="gray.50" padding={4}>
       <Stack>
+        <ErrorBanner message={error} />
         <TypedForm
           actionName="/api/update-task"
           onSuccess={() => {
