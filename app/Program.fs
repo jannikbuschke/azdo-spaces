@@ -2,6 +2,7 @@ namespace sample.fs
 
 open Glow.Azure
 open Microsoft.AspNetCore.Authentication.Cookies
+open Microsoft.AspNetCore.Authentication.OpenIdConnect
 open Microsoft.AspNetCore.Http
 open Marten
 open System
@@ -18,6 +19,8 @@ open Glow.Tests
 open Glow.Azdo.Authentication
 open Glow.TypeScript
 open Glow.Azure.AzureKeyVault
+open Microsoft.Identity.Web
+open Microsoft.Identity.Web.UI
 
 #nowarn "20"
 
@@ -70,27 +73,7 @@ module Program =
                                                 GenerateApi = true
                                             ) |]
 
-        let authScheme =
-            CookieAuthenticationDefaults.AuthenticationScheme
-
-        let cookieAuth (o: CookieAuthenticationOptions) =
-            do
-                o.Cookie.HttpOnly <- true
-                o.Cookie.SecurePolicy <- CookieSecurePolicy.SameAsRequest
-                o.SlidingExpiration <- true
-                o.ExpireTimeSpan <- TimeSpan.FromDays 7.0
-
-        services
-            .AddAuthentication(authScheme)
-            .AddCookie(cookieAuth)
-            .AddAzdoClientServices(fun options ->
-                options.Pat <- builder.Configuration.Item("azdo:Pat")
-                options.OrganizationBaseUrl <- builder.Configuration.Item("azdo:OrganizationBaseUrl"))
-        |> ignore
-
-        services.AddTestAuthentication()
         services.AddResponseCaching()
-
 
         let connectionString =
             builder.Configuration.Item("ConnectionString")
@@ -104,10 +87,15 @@ module Program =
             .AddMarten(options)
             .UseLightweightSessions()
 
-
         builder.AddKeyVaultAsConfigurationProviderIfNameConfigured()
 
         builder.Services.AddGlowAadIntegration(builder.Environment, builder.Configuration)
+
+        builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+          .AddAzdoClientServices(fun options ->
+                        options.Pat <- builder.Configuration.Item("azdo:Pat")
+                        options.OrganizationBaseUrl <- builder.Configuration.Item("azdo:OrganizationBaseUrl"))
+          .AddMicrosoftIdentityWebApp(builder.Configuration,"OpenIdConnect")
 
         builder.Services.AddAuthorization
             (fun options -> options.AddPolicy("Authenticated", (fun v -> v.RequireAuthenticatedUser() |> ignore)))

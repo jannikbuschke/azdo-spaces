@@ -18,7 +18,7 @@ module Spaces =
       AreaPath: string
       ApiKeys: List<string> }
 
-  [<Action(Route = "api/delete-workspace", AllowAnonymous = true)>]
+  [<Action(Route = "api/delete-workspace", Policy = "Authenticated")>]
   type DeleteWorkspace() =
     interface IRequest<Workspace>
     member val Id = Guid.Empty with get, set
@@ -37,7 +37,7 @@ module Spaces =
           return entity
         }
 
-  [<Action(Route = "api/get-workspaces", AllowAnonymous = true)>]
+  [<Action(Route = "api/get-workspaces", Policy = "Authenticated")>]
   type GetAreas() =
     interface IRequest<List<Workspace>>
 
@@ -50,7 +50,7 @@ module Spaces =
           return entities
         }
 
-  [<Action(Route = "api/get-workspace", AllowAnonymous = true)>]
+  [<Action(Route = "api/get-workspace", Policy = "Authenticated")>]
   type GetArea() =
     interface IRequest<Workspace>
     member val Id = Guid.Empty with get, set
