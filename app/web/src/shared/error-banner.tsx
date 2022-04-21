@@ -15,6 +15,8 @@ export function ErrorBanner({
   ) : typeof message === "object" ? (
     message instanceof Error ? (
       message.message
+    ) : message.title || message.detail ? (
+      message.title + " " + message.detail
     ) : (
       <RenderObject msg={message} />
     )

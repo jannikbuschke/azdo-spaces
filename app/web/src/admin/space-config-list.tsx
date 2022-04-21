@@ -4,9 +4,10 @@ import { useMatch, useNavigate, useResolvedPath } from "react-router"
 import { Button, ButtonGroup, Stack, Flex, Heading } from "@chakra-ui/react"
 import { Table, Tbody, Tr, Td } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
+import { ErrorBanner } from "../shared/error-banner"
 
 export function WorkspaceList() {
-  const { data, refetch } = useTypedQuery("/api/get-workspaces", {
+  const { data, refetch, error } = useTypedQuery("/api/get-workspaces", {
     input: {},
     placeholder: [],
   })
@@ -31,20 +32,11 @@ export function WorkspaceList() {
           Create
         </Button>
       </ButtonGroup>
+      <ErrorBanner message={error} />
       <Table variant="unstyled" size="sm" background="gray.200">
-        {/* <Thead>
-            <Tr>
-              <Th>Title</Th>
-            </Tr>
-          </Thead> */}
         <Tbody>
           {data.map((v) => (
             <Row to={`./${v.id}`} id={v.id!} displayName={v.displayName!} />
-            // <Tr>
-            //   <Td>
-            //     <Link to={`./${v.id}`}>{v.displayName}</Link>
-            //   </Td>
-            // </Tr>
           ))}
         </Tbody>
       </Table>

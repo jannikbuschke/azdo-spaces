@@ -26,8 +26,6 @@ export function SelectProject({
   })
   return (
     <>
-      {/* <div>Status = {status}</div>
-      <Button onClick={() => refetch()}>Reload</Button> */}
       <Select
         placeholder={"Select project"}
         size="sm"
@@ -88,8 +86,6 @@ export function SelectArea({
   const nodes = flatMap(data)
   return (
     <div>
-      {/* <div>Status = {status}</div>
-      <Button onClick={() => refetch()}>Reload</Button> */}
       <Select
         colorScheme="blue"
         placeholder="Select AreaPath"

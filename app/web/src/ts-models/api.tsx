@@ -36,7 +36,7 @@ type QueryOutputs = {
   "/api/get-workspace-viewmodel": AzdoTasks.WorkspaceViewmodel,
   "/api/get-area-paths": Microsoft_TeamFoundation_WorkItemTracking_WebApi_Models.WorkItemClassificationNode,
   "/api/get-projects": Microsoft_TeamFoundation_Core_WebApi.TeamProjectReference[],
-  "/api/get-workspaces": AzdoTasks.Workspace[],
+  "/api/get-workspaces": AzdoTasks.WorkspaceListItemViewmodel[],
   "/api/get-workspace": AzdoTasks.Workspace,
   "/api/glow/test-automation/get-available-fake-users": Glow_TestAutomation.FakeUsers,
 }

@@ -13,12 +13,15 @@ open Spaces
 
 module AzdoProjects =
 
-  let getClientForWorkspace<'T when 'T :> VssHttpClientBase> (clients: AzdoClients) (workspace: Workspace) =
+  let getClientForWorkspace<'T when 'T :> VssHttpClientBase> (clients: AzdoClients) (workspace: Workspace) (logger:ILogger)=
     task {
+
       let! client =
         match workspace.Pat.IsSome
               && workspace.OrganizationUrl.IsSome with
-        | true -> clients.GetAppClient<'T>(workspace.OrganizationUrl.Value, workspace.Pat.Value)
+        | true ->
+          logger.LogInformation($"Create client with URL ${workspace.OrganizationUrl.Value} and PAT")
+          clients.GetAppClient<'T>(workspace.OrganizationUrl.Value, workspace.Pat.Value)
         | false -> clients.GetAppClient<'T>()
 
       return client

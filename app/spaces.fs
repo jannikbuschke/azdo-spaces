@@ -6,8 +6,12 @@ open Marten
 open System.Linq
 open MediatR
 open Glow.Core.Actions
+open Microsoft.AspNetCore.Http
+open Microsoft.Extensions.Logging
 
 module Spaces =
+
+  type WorkspaceListItemViewmodel = { Id: Guid; DisplayName: string }
 
   type Workspace =
     { Id: Guid
@@ -39,14 +43,26 @@ module Spaces =
 
   [<Action(Route = "api/get-workspaces", Policy = "Authenticated")>]
   type GetAreas() =
-    interface IRequest<List<Workspace>>
+    interface IRequest<List<WorkspaceListItemViewmodel>>
 
-  type GetAreasHandler(store: IDocumentStore) =
-    interface IRequestHandler<GetAreas, List<Workspace>> with
+  type GetAreasHandler(store: IDocumentStore, httpCtx: IHttpContextAccessor, logger: ILogger<GetAreasHandler>) =
+    interface IRequestHandler<GetAreas, List<WorkspaceListItemViewmodel>> with
       member this.Handle(request, token) =
         task {
+          let isAuthenticated =
+            httpCtx.HttpContext.User.Identity.IsAuthenticated
+
+          logger.LogInformation $"Is user authenticated = {isAuthenticated}"
           use session = store.LightweightSession()
-          let entities = session.Query<Workspace>().ToList()
+
+          let entities =
+            session
+              .Query<Workspace>()
+              .Select(fun v ->
+                { Id = v.Id
+                  DisplayName = v.DisplayName })
+              .ToList()
+
           return entities
         }
 
@@ -64,7 +80,8 @@ module Spaces =
               .Query<Workspace>()
               .Single(fun v -> v.Id = request.Id)
 
-          return entity
+          let result ={ entity with Pat = Some "***" }
+          return result
         }
 
   [<Action(Route = "api/upsert-workspace", AllowAnonymous = true)>]
@@ -91,14 +108,19 @@ module Spaces =
             else
               request.Id
 
+          let! storedEntity = session.Query<Workspace>().Where(fun v->v.Id = id).SingleOrDefaultAsync()
+          let storedEntityOption = if (box storedEntity = null) then None else Some(storedEntity)
+
+          let requestPat =  toOption request.Pat
           let entity =
             { Id = id
               DisplayName = request.DisplayName
-              Pat = toOption request.Pat
+              Pat = if requestPat.IsSome && requestPat.Value = "***" && storedEntityOption.IsSome then storedEntity.Pat else requestPat
               OrganizationUrl = toOption request.OrganizationUrl
               ProjectId = request.ProjectId.Value
               AreaPath = request.AreaPath
               ApiKeys = request.ApiKeys }
+
 
           session.Store(entity)
 

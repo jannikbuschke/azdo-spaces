@@ -136,31 +136,40 @@ export function UpsertAreaForm({
                   </FormControl>
                 )}
               </Field>
-              <Field name="projectId">
-                {({ form }: FieldProps) => (
-                  <FormControl>
-                    <FormLabel htmlFor="projectId">Project</FormLabel>
-                    <SelectProject
-                      onChange={(v) => form.setFieldValue("projectId", v)}
-                    />
-                    <FormHelperText>{f.values.projectId}</FormHelperText>
-                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-              <Field name="areaPath">
-                {({ form }: FieldProps) => (
-                  <FormControl>
-                    <FormLabel htmlFor="areaPath">Area Path</FormLabel>
-                    <SelectArea
-                      projectId={f.values.projectId}
-                      onChange={(v) => form.setFieldValue("areaPath", v)}
-                    />
-                    <FormHelperText>{f.values.areaPath}</FormHelperText>
-                    <FormErrorMessage>{form.errors.areaPath}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
+              {f.values.pat === "***" ? (
+                <div />
+              ) : (
+                <>
+                  <Field name="projectId">
+                    {({ form }: FieldProps) => (
+                      <FormControl>
+                        <FormLabel htmlFor="projectId">Project</FormLabel>
+                        <SelectProject
+                          onChange={(v) => form.setFieldValue("projectId", v)}
+                        />
+                        <FormHelperText>{f.values.projectId}</FormHelperText>
+                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name="areaPath">
+                    {({ form }: FieldProps) => (
+                      <FormControl>
+                        <FormLabel htmlFor="areaPath">Area Path</FormLabel>
+                        <SelectArea
+                          projectId={f.values.projectId}
+                          onChange={(v) => form.setFieldValue("areaPath", v)}
+                        />
+                        <FormHelperText>{f.values.areaPath}</FormHelperText>
+                        <FormErrorMessage>
+                          {form.errors.areaPath}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                </>
+              )}
+
               <Field name="apiKeys[0]">
                 {({ field }: FieldProps) => (
                   <FormControl>

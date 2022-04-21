@@ -25,17 +25,20 @@ module AzdoTasks =
   [<Action(Route = "api/get-task", AllowAnonymous = true)>]
   type GetTask() =
     interface IRequest<WorkItem>
+
     [<NotEmpty>]
-    member val WorkspaceId = Unchecked.defaultof<Guid> with get,set
+    member val WorkspaceId = Unchecked.defaultof<Guid> with get, set
+
     [<System.ComponentModel.DataAnnotations.RequiredAttribute>]
     member val TaskId = Unchecked.defaultof<int> with get, set
 
-  type GetTaskHandler(clients: AzdoClients, session:IDocumentSession, logger:ILogger<GetTaskHandler>) =
+  type GetTaskHandler(clients: AzdoClients, session: IDocumentSession, logger: ILogger<GetTaskHandler>) =
     interface IRequestHandler<GetTask, WorkItem> with
       member this.Handle(request, token) =
         task {
           let! workspace = session.LoadAsync<Workspace>(request.WorkspaceId)
-          let! client = getClientForWorkspace<WorkItemTrackingHttpClient> clients workspace
+          let! client = getClientForWorkspace<WorkItemTrackingHttpClient> clients workspace logger
+
           let! data =
             client.GetWorkItemAsync(
               id = request.TaskId,
@@ -200,7 +203,8 @@ module AzdoTasks =
             session
               .Query<Workspace>()
               .Single(fun v -> v.Id = request.WorkspaceId)
-          let! client = getClientForWorkspace<ProjectHttpClient> clients workspace
+
+          let! client = getClientForWorkspace<ProjectHttpClient> clients workspace logger
           let! project = client.GetProject(workspace.ProjectId.ToString())
           return WorkspaceViewmodel(WorkspaceId = workspace.Id, ProjectName = project.Name, AreaPath = workspace.AreaPath)
         }

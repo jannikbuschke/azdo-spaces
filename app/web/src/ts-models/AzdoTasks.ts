@@ -186,3 +186,13 @@ export const defaultWorkspace: Workspace = {
   apiKeys: [],
 }
 
+export interface WorkspaceListItemViewmodel {
+  id: string
+  displayName: string | null
+}
+
+export const defaultWorkspaceListItemViewmodel: WorkspaceListItemViewmodel = {
+  id: "00000000-0000-0000-0000-000000000000",
+  displayName: null,
+}
+
