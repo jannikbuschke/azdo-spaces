@@ -13,6 +13,7 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
+open Microsoft.IdentityModel.Logging
 open Serilog
 open Glow.Core
 open Glow.Tests
@@ -50,6 +51,8 @@ module Program =
 
     [<EntryPoint>]
     let main args =
+        IdentityModelEventSource.ShowPII <- true
+
         let logger: Serilog.ILogger = upcast getPreStartLogger ()
         Log.Logger = logger
         let builder = WebApplication.CreateBuilder(args)
