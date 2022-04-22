@@ -239,7 +239,7 @@ module AzdoTasks =
             session
               .Query<Workspace>()
               .Single(fun v -> v.Id = request.WorkspaceId)
-          let! client = getClientForWorkspace<WorkItemTrackingHttpClient> clients workspace
+          let! client = getClientForWorkspace<WorkItemTrackingHttpClient> clients workspace logger
 
           let! queryResults = client.QueryByWiqlAsync(Wiql(Query = query), workspace.ProjectId)
 
