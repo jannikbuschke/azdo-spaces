@@ -75,7 +75,6 @@ module Program =
                                                 Path = "./web/src/ts-models/",
                                                 GenerateApi = true
                                             ) |]
-
         services.AddResponseCaching()
 
         let connectionString =

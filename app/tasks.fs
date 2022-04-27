@@ -2,11 +2,9 @@
 
 open System.Collections.Generic
 open System.Threading.Tasks
-open Glow.Glue.AspNetCore
 open Microsoft.Extensions.Logging
 open Microsoft.TeamFoundation.Core.WebApi
 open Microsoft.TeamFoundation.WorkItemTracking.WebApi
-open Microsoft.VisualStudio.Services.WebApi
 open System
 open Glow.Azdo.Authentication
 open Marten
