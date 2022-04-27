@@ -26,7 +26,6 @@ export function ConfigreOpenIdConnectRoutes() {
 }
 
 export function ConfigureOpenid() {
-  const [action] = useTypedAction("/api/glow/set-openid-connect-options")
   const toast = useToast()
   return (
     <Flex
@@ -91,6 +90,18 @@ export function ConfigureOpenid() {
                   >
                     <FormLabel htmlFor="tenantId">Tenant ID</FormLabel>
                     <Input {...field} size="sm" id="tenantId" placeholder="" />
+                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+              <Field name="instance">
+                {({ field, form }: FieldProps) => (
+                  <FormControl
+                    size="sm"
+                    // isInvalid={Boolean(form.errors.name && form.touched.title)}
+                  >
+                    <FormLabel htmlFor="instance">Instance</FormLabel>
+                    <Input {...field} size="sm" id="instance" placeholder="" />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   </FormControl>
                 )}
