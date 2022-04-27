@@ -79,7 +79,8 @@ export function TaskList({
           <Button onClick={() => navigate("./create")}>Create</Button>
         </ButtonGroup>
         <ButtonGroup size="sm" isAttached={true}>
-          {["New", "Active", "Resolved", "Closed"].map((v) => (
+          {/* get from configuration/workspace */}
+          {["New", "Active", "Resolved", "Closed", "Backlog"].map((v) => (
             <Button
               background={stateFilter === v ? "black.300" : undefined}
               onClick={() => {
